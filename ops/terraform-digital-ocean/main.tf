@@ -69,7 +69,7 @@ resource "digitalocean_droplet" "nginx-main" {
 
       "apt -y install nginx",
 
-      "git clone https://github.com/JoshuaXOng/racing-odds-scraper.git",
+      "git clone https://github.com/JoshuaXOng/jxo-landing.git",
       
       "ufw allow http",
       "ufw allow https",
@@ -79,7 +79,7 @@ resource "digitalocean_droplet" "nginx-main" {
       "ufw allow out 80/tcp",
       "ufw allow out 443/tcp",
 
-      "mv /root/racing-odds-scraper/ops/nginx/jxo-gateway.conf /etc/nginx/conf.d/",
+      "mv /root/jxo-landing/ops/nginx/jxo-gateway.conf /etc/nginx/conf.d/",
 
       "nginx -s reload",
     ]
