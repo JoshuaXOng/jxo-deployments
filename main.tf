@@ -1,4 +1,3 @@
-module "digital-ocean-racing-odds-scraper" {
-  source = "./ops/terraform-nginx"
-
+module "digital-ocean-jxo-gateway" {
+  source = "./ops/terraform-digital-ocean"
 }
