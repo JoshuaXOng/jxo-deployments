@@ -11,25 +11,25 @@ provider "digitalocean" {
   token = "${var.do_token}"
 }
 
-resource "digitalocean_ssh_key" "nginx-pub" {
-  name       = "nginx-pub-key"
+resource "digitalocean_ssh_key" "jxo-gw-pub" {
+  name       = "jxo-gw-pub-key"
   public_key = file("${var.do_pub_key}")
 }
 
-resource "digitalocean_vpc" "nginx-main" {
-  name     = "nginx-vpc-main"
+resource "digitalocean_vpc" "jxo-gw-main" {
+  name     = "jxo-gw-vpc-main"
   region   = "sgp1"
   ip_range = "172.31.254.0/24"
 }
 
-resource "digitalocean_droplet" "nginx-main" {
-  name   = "nginx-droplet-main"
+resource "digitalocean_droplet" "jxo-gw-main" {
+  name   = "jxo-gw-droplet-main"
   image  = "docker-18-04"
-  vpc_uuid = "${digitalocean_vpc.nginx-main.id}"
+  vpc_uuid = "${digitalocean_vpc.jxo-gw-main.id}"
   region = "sgp1"
   size   = "s-1vcpu-1gb"
 
-  ssh_keys = ["${digitalocean_ssh_key.nginx-pub.fingerprint}"]
+  ssh_keys = ["${digitalocean_ssh_key.jxo-gw-pub.fingerprint}"]
 
   provisioner "remote-exec" {
     connection {
@@ -86,10 +86,10 @@ resource "digitalocean_droplet" "nginx-main" {
   }
 }
 
-resource "digitalocean_firewall" "nginx-main" {
+resource "digitalocean_firewall" "jxo-gw-main" {
   name = "nginx-fw-in-misc-out-misc"
 
-  droplet_ids = [digitalocean_droplet.nginx-main.id]
+  droplet_ids = [digitalocean_droplet.jxo-gw-main.id]
 
   inbound_rule {
     protocol         = "tcp"
@@ -170,5 +170,5 @@ resource "digitalocean_record" "racing-odds-scraper-a" {
   domain = digitalocean_domain.racing-odds-scraper-main.id
   type   = "A"
   name   = "@"
-  value  = digitalocean_droplet.nginx-main.ipv4_address
+  value  = digitalocean_droplet.jxo-gw-main.ipv4_address
 }
