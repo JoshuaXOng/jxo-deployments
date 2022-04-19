@@ -47,6 +47,7 @@ resource "digitalocean_droplet" "jxo-gw-main" {
       "mkdir /etc/letsencrypt/",
       "mkdir /etc/letsencrypt/live/",
       "mkdir /etc/letsencrypt/live/${var.racing-odds-scraper-hostname}/",
+      "mkdir /etc/letsencrypt/live/${var.jxo-landing-hostname}/",
     ]
   }
   provisioner "local-exec" {
@@ -54,6 +55,12 @@ resource "digitalocean_droplet" "jxo-gw-main" {
   }
   provisioner "local-exec" {
     command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.racing-odds-scraper-priv-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.racing-odds-scraper-hostname}/"
+  }
+  provisioner "local-exec" {
+    command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.jxo-landing-pub-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.jxo-landing-hostname}/"
+  }
+  provisioner "local-exec" {
+    command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.jxo-landing-priv-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.jxo-landing-hostname}/"
   }
 
   provisioner "remote-exec" {

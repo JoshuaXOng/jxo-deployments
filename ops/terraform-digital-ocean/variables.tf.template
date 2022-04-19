@@ -29,3 +29,15 @@ variable "racing-odds-scraper-pub-ssl-key" {
 variable "racing-odds-scraper-priv-ssl-key" {
   default =
 }
+
+variable "jxo-landing-hostname" {
+  default =
+}
+
+variable "jxo-landing-pub-ssl-key" {
+  default =
+}
+
+variable "jxo-landing-priv-ssl-key" {
+  default =
+}
