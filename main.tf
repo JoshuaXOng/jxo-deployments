@@ -4,11 +4,23 @@ terraform {
       source = "digitalocean/digitalocean"
       version = "~> 2.0"
     }
+    
+    google = {
+      source  = "hashicorp/google"
+      version = "4.9.0"
+    }
   }
 }
 
 provider "digitalocean" {
   token = "${var.do_token}"
+}
+
+provider "google" {
+  credentials = file(var.gcp_key)
+  project = "balendar"
+  region  = "us-central1"
+  zone    = "us-central1-c"
 }
 
 module "digital-ocean-jxo-landing" {

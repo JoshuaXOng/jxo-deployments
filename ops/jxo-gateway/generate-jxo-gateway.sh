@@ -1,5 +1,12 @@
 tee -a /etc/nginx/conf.d/jxo-gateway.conf << END
 server {
+  listen 80 default_server;
+  server_name _;
+
+  return 301 https://\$host\$request_uri;
+}
+
+server {
   listen 443 ssl;
   server_name joshuaxong.me;
 
@@ -19,24 +26,7 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/rammus.tech/privkey.pem;
 
   location / {
-    proxy_pass https://localhost:8080/;
-  }
-}
-
-server {
-  listen 8000;
-
-  location / {
-    proxy_pass http://example.com;
-    proxy_set_header Host example.com;
-  }
-}
-
-server {
-  listen 1337;
-
-  location / {
-    return 301 https://google.com;
+    proxy_pass http://localhost:8080/;
   }
 }
 END

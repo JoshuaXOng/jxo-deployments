@@ -9,3 +9,7 @@ variable "do_priv_key" {
 variable "do_token" {
   default =
 }
+
+variable "gcp_key" {
+  default =
+}

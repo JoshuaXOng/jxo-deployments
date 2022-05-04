@@ -23,7 +23,7 @@ resource "digitalocean_droplet" "jxo-gateway-main" {
   image  = "docker-18-04"
   vpc_uuid = "${digitalocean_vpc.jxo-gateway-main.id}"
   region = "sgp1"
-  size   = "s-1vcpu-1gb"
+  size   = "s-1vcpu-2gb"
 
   ssh_keys = ["${digitalocean_ssh_key.jxo-gateway-pub.fingerprint}"]
 
