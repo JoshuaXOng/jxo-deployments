@@ -1,3 +1,4 @@
+touch /etc/nginx/conf.d/jxo-gateway.conf
 tee -a /etc/nginx/conf.d/jxo-gateway.conf << END
 server {
   listen 80;
