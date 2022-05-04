@@ -1,3 +1,11 @@
+cat <<EOT >> ./ops/jxo-gateway/jxo-gateway.conf
+server {
+  listen 80 default_server;
+  server_name _;
+
+  return 301 https://\$host\$request_uri;
+}
+
 server {
   listen 443 ssl;
   server_name joshuaxong.me;
@@ -6,7 +14,7 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/joshuaxong.me/privkey.pem;
 
   location / {
-    proxy_pass https://jxo-landing-hvyky.ondigitalocean.app;
+    proxy_pass $1;
   }
 }
 
@@ -18,7 +26,7 @@ server {
   ssl_certificate_key /etc/letsencrypt/live/rammus.tech/privkey.pem;
 
   location / {
-    proxy_pass https://jxo-landing-hvyky.ondigitalocean.app;
+    proxy_pass https://localhost:8080/;
   }
 }
 

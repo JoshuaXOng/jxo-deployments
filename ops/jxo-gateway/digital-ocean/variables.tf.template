@@ -10,28 +10,28 @@ variable "do_token" {
   default =
 }
 
-variable "email" {
-  default =
-}
-
 variable "whitelisted_ssh_ips" {
   default =
 }
 
-variable "racing-odds-scraper-hostname" {
+variable "balendar-hostname" {
   default =
 }
 
-variable "racing-odds-scraper-pub-ssl-key" {
+variable "balendar-pub-ssl-key" {
   default =
 }
 
-variable "racing-odds-scraper-priv-ssl-key" {
+variable "balendar-priv-ssl-key" {
   default =
 }
 
 variable "jxo-landing-hostname" {
   default =
+}
+
+variable "jxo-landing-live-url" {
+  type = string
 }
 
 variable "jxo-landing-pub-ssl-key" {

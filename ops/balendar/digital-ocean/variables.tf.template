@@ -1,0 +1,11 @@
+variable "do_pub_key" {
+  default =
+}
+
+variable "do_priv_key" {
+  default =
+}
+
+variable "do_token" {
+  default =
+}

@@ -7,29 +7,25 @@ terraform {
   }
 }
 
-provider "digitalocean" {
-  token = "${var.do_token}"
-}
-
-resource "digitalocean_ssh_key" "jxo-gw-pub" {
-  name       = "jxo-gw-pub-key"
+resource "digitalocean_ssh_key" "jxo-gateway-pub" {
+  name       = "jxo-gateway-pub-key"
   public_key = file("${var.do_pub_key}")
 }
 
-resource "digitalocean_vpc" "jxo-gw-main" {
-  name     = "jxo-gw-vpc-main"
+resource "digitalocean_vpc" "jxo-gateway-main" {
+  name     = "jxo-gateway-vpc-main"
   region   = "sgp1"
   ip_range = "172.31.254.0/24"
 }
 
-resource "digitalocean_droplet" "jxo-gw-main" {
-  name   = "jxo-gw-droplet-main"
+resource "digitalocean_droplet" "jxo-gateway-main" {
+  name   = "jxo-gateway-droplet-main"
   image  = "docker-18-04"
-  vpc_uuid = "${digitalocean_vpc.jxo-gw-main.id}"
+  vpc_uuid = "${digitalocean_vpc.jxo-gateway-main.id}"
   region = "sgp1"
   size   = "s-1vcpu-1gb"
 
-  ssh_keys = ["${digitalocean_ssh_key.jxo-gw-pub.fingerprint}"]
+  ssh_keys = ["${digitalocean_ssh_key.jxo-gateway-pub.fingerprint}"]
 
   provisioner "remote-exec" {
     connection {
@@ -46,15 +42,15 @@ resource "digitalocean_droplet" "jxo-gw-main" {
 
       "mkdir /etc/letsencrypt/",
       "mkdir /etc/letsencrypt/live/",
-      "mkdir /etc/letsencrypt/live/${var.racing-odds-scraper-hostname}/",
+      "mkdir /etc/letsencrypt/live/${var.balendar-hostname}/",
       "mkdir /etc/letsencrypt/live/${var.jxo-landing-hostname}/",
     ]
   }
   provisioner "local-exec" {
-    command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.racing-odds-scraper-pub-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.racing-odds-scraper-hostname}/"
+    command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.balendar-pub-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.balendar-hostname}/"
   }
   provisioner "local-exec" {
-    command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.racing-odds-scraper-priv-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.racing-odds-scraper-hostname}/"
+    command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.balendar-priv-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.balendar-hostname}/"
   }
   provisioner "local-exec" {
     command = "scp -oStrictHostKeyChecking=no -i ${var.do_priv_key} ${var.jxo-landing-pub-ssl-key} root@${self.ipv4_address}:/etc/letsencrypt/live/${var.jxo-landing-hostname}/"
@@ -76,7 +72,7 @@ resource "digitalocean_droplet" "jxo-gw-main" {
 
       "apt -y install nginx",
 
-      "git clone https://github.com/JoshuaXOng/jxo-gw.git",
+      "git clone https://github.com/JoshuaXOng/jxo-deployments.git",
       
       "ufw allow http",
       "ufw allow https",
@@ -86,17 +82,18 @@ resource "digitalocean_droplet" "jxo-gw-main" {
       "ufw allow out 80/tcp",
       "ufw allow out 443/tcp",
 
-      "mv /root/jxo-gw/ops/nginx/jxo-gateway.conf /etc/nginx/conf.d/",
+      "/root/jxo-deployments/ops/jxo-gateway/generate-jxo-gateway.sh ${var.jxo-landing-live-url}",
+      "mv /root/jxo-deployments/ops/jxo-gateway/jxo-gateway.conf /etc/nginx/conf.d/",
 
       "nginx -s reload",
     ]
   }
 }
 
-resource "digitalocean_firewall" "jxo-gw-main" {
-  name = "nginx-fw-in-misc-out-misc"
+resource "digitalocean_firewall" "jxo-gateway-main" {
+  name = "jxo-gateway-fw-in-misc-out-misc"
 
-  droplet_ids = [digitalocean_droplet.jxo-gw-main.id]
+  droplet_ids = [digitalocean_droplet.jxo-gateway-main.id]
 
   inbound_rule {
     protocol         = "tcp"
@@ -169,13 +166,13 @@ resource "digitalocean_firewall" "jxo-gw-main" {
   }
 }
 
-resource "digitalocean_domain" "racing-odds-scraper-main" {
-  name       = var.racing-odds-scraper-hostname
+resource "digitalocean_domain" "balendar-main" {
+  name       = var.balendar-hostname
 }
 
-resource "digitalocean_record" "racing-odds-scraper-a" {
-  domain = digitalocean_domain.racing-odds-scraper-main.id
+resource "digitalocean_record" "balendar-a" {
+  domain = digitalocean_domain.balendar-main.id
   type   = "A"
   name   = "@"
-  value  = digitalocean_droplet.jxo-gw-main.ipv4_address
+  value  = digitalocean_droplet.jxo-gateway-main.ipv4_address
 }

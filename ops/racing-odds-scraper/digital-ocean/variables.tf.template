@@ -1,0 +1,19 @@
+variable "do_pub_key" {
+  default =
+}
+
+variable "do_priv_key" {
+  default =
+}
+
+variable "do_token" {
+  default =
+}
+
+variable "whitelisted_ssh_ips" {
+  default =
+}
+
+variable "racing-odds-scraper-hostname" {
+  default =
+}
