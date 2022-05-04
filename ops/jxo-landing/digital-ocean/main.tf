@@ -24,6 +24,6 @@ resource "digitalocean_app" "jxo-landing" {
   }
 }
 
-output "jxo-landing-live_url" {
+output "jxo-landing-live-url" {
   value = digitalocean_app.jxo-landing.live_url
 }

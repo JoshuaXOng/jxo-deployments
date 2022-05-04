@@ -18,7 +18,7 @@ module "digital-ocean-jxo-landing" {
 module "digital-ocean-jxo-gateway" {
   source = "./ops/jxo-gateway/digital-ocean"
 
-  jxo-landing-live-url = module.digital-ocean-jxo-landing.jxo-landing-live_url
+  jxo-landing-live-url = module.digital-ocean-jxo-landing.jxo-landing-live-url
 
   depends_on = [
     module.digital-ocean-jxo-landing
@@ -27,6 +27,8 @@ module "digital-ocean-jxo-gateway" {
 
 module "digital-ocean-balendar" {
   source = "./ops/balendar/digital-ocean"
+
+  jxo-gateway-main-ipv4-address = module.digital-ocean-jxo-gateway.jxo-gateway-main-ipv4-address
 
   depends_on = [
     module.digital-ocean-jxo-gateway

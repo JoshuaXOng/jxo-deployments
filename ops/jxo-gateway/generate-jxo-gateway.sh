@@ -1,4 +1,4 @@
-cat <<EOT >> ./ops/jxo-gateway/jxo-gateway.conf
+cat <<EOT >> /root/jxo-deployment/ops/jxo-gateway/jxo-gateway.conf
 server {
   listen 80 default_server;
   server_name _;
