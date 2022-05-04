@@ -1,3 +1,3 @@
-# jxo-gw
+# jxo-deployments
 
-IaC for gateway to personal services.
+IaC deployments for personal services/applications.
