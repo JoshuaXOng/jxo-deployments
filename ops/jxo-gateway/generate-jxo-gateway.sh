@@ -1,9 +1,9 @@
 tee -a /etc/nginx/conf.d/jxo-gateway.conf << END
 server {
-  listen 80 default_server;
-  server_name _;
+  listen 80;
+  server_name joshuaxong.me;
 
-  return 301 https://\$host\$request_uri;
+  return 301 https://joshuaxong.me\$request_uri;
 }
 
 server {
@@ -16,6 +16,13 @@ server {
   location / {
     proxy_pass $1;
   }
+}
+
+server {
+  listen 80;
+  server_name rammus.tech;
+
+  return 301 https://rammus.tech\$request_uri;
 }
 
 server {
