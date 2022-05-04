@@ -81,8 +81,8 @@ resource "digitalocean_droplet" "jxo-gateway-main" {
       "ufw allow 1337",
       "ufw allow out 80/tcp",
       "ufw allow out 443/tcp",
-
-      "/root/jxo-deployments/ops/jxo-gateway/generate-jxo-gateway.sh ${var.jxo-landing-live-url}",
+  
+      "sudo /root/jxo-deployments/ops/jxo-gateway/generate-jxo-gateway.sh ${var.jxo-landing-live-url}",
 
       "nginx -s reload",
     ]

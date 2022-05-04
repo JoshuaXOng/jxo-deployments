@@ -1,12 +1,5 @@
 tee -a /etc/nginx/conf.d/jxo-gateway.conf << END
 server {
-  listen 80 default_server;
-  server_name _;
-
-  return 301 https://\$host\$request_uri;
-}
-
-server {
   listen 443 ssl;
   server_name joshuaxong.me;
 
