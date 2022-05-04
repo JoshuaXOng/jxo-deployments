@@ -1,4 +1,4 @@
-cat <<EOT >> /root/jxo-deployment/ops/jxo-gateway/jxo-gateway.conf
+tee -a ./ops/jxo-gateway/jxo-gateway.conf << END
 server {
   listen 80 default_server;
   server_name _;
@@ -46,3 +46,4 @@ server {
     return 301 https://google.com;
   }
 }
+END
