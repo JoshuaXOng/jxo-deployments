@@ -10,6 +10,26 @@ variable "do_token" {
   default =
 }
 
+variable "gcp_key" {
+  default =
+}
+
 variable "jxo-gateway-main-ipv4-address" {
   type = string
+}
+
+variable "balendar-jwt-secret-key" {
+  default = 
+}
+
+variable "balendar-mongodb-default-database" {
+  default = 
+}
+
+variable "balendar-mongodb-connection-string" {
+  default = 
+}
+
+variable "balendar-api-base-url" {
+  default = 
 }
